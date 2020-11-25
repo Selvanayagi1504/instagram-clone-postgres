@@ -114,14 +114,7 @@ export default {
     }
   },
   mounted() {
-    // if(localStorage.getItem('cats')) {
-    //   try {
-    //     this.cats = JSON.parse(localStorage.getItem('cats'));
-    //   } catch(e) {
-    //     localStorage.removeItem('cats');
-    //   }
-    // }
-   
+    sessionStorage.setItem('email',"")
     this.startSlide();
   },
   

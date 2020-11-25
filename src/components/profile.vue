@@ -342,6 +342,9 @@
             this.posts = []
             let pa = []
             let email = sessionStorage.getItem('email');
+            if(email==""){
+                this.$router.push({path: '/Error'})
+            }
             console.log(email)
             this.slides = 0
             fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/" + email)
@@ -485,7 +488,8 @@
                             path: f.path,
                             comment: this.editcom,
                             likes: f.likes,
-                            date: f.date
+                            date: f.date,
+                            ucom:f.ucom
                         }
                         post.push(sam)
                     } else {
@@ -548,7 +552,8 @@
                         path: this.urls,
                         comment: this.comment_image,
                         likes: "0",
-                        date: this.timestamp
+                        date: this.timestamp,
+                        ucom:[]
                     }
                     console.log(post)
                     this.po.push(post)
@@ -583,7 +588,7 @@
                     })
                     .then(response => response.json())
                     .then(json => console.log(json));
-                window.location.reload();
+                // window.location.reload();
             },
             removeimage(img) {
                 console.log(img)
@@ -606,7 +611,7 @@
                     })
                     .then(response => response.json())
                     .then(json => console.log(json));
-                window.location.reload();
+                // window.location.reload();
             },
             saveimage() {
                 let email = sessionStorage.getItem('email');
@@ -622,7 +627,7 @@
                     .then(response => response.json())
                     .then(json => console.log(json));
                 this.showModal = false
-                window.location.reload()
+                // window.location.reload()
             }
         }
     }

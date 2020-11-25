@@ -84,6 +84,9 @@
         },
         mounted() {
             let email = sessionStorage.getItem('email');
+             if(email==""){
+                this.$router.push({path: '/Error'})
+            }
             fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/"+email)
             .then(response => response.json())
             .then(dataans => {

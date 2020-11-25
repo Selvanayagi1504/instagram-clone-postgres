@@ -1,12 +1,11 @@
 <template>
-    <div class="upload">
+    <div class="postcom">
         <div class="nav-upload">
             <div class="row" style="margin-top: 7px;margin-bottom: 5px;">
                 <div class="col-sm-4">
                     <img :src="require('./images/instagram-name.png')" class="img-insta" />
                 </div>
                 <div class="col-sm-4">
-                    <!-- <input type="text" placeholder="&#xF002;Search" class="search-bar"/> -->
                     <center>
                         <div class="form-group has-search">
                             <span class="fa fa-search form-control-feedback"></span>
@@ -15,7 +14,9 @@
                     </center>
                 </div>
                 <div class="col-sm-4 icon-arrange" v-bind:key="pro">
-                    <img :src="require('./images/home-icon.png')" class="icon-side" />
+                    <router-link to="/upload">
+                        <img :src="require('./images/home-icon.png')" class="icon-side" />
+                    </router-link>
                     <img :src="require('./images/save.png')" class="icon-side" />
                     <img :src="require('./images/discover.png')" class="icon-side" />
                     <img :src="require('./images/activity.png')" class="icon-side" />
@@ -30,9 +31,9 @@
                 </div>
             </div>
         </div>
-        <br />
+        <br/>
         <center>
-            <div v-bind:key="cdx" v-for="(cat,cdx) in cats">
+           <div v-bind:key="cdx" v-for="(cat,cdx) in post">
 
                 <div class="post-p">
                     <div class="username-post">
@@ -114,28 +115,18 @@
                             <input type="text" v-model="usercom" class="comment-edit" id='comedit'>
                             <button @click="saveucom(`${cat.id}`,`${cat.moboremail}`)" class="save-edit">POST</button>
                         </div>
+                        <div class="comment" v-bind:key="codx" v-for="(com,codx) in usercomments">
+                            <img :src="`${com.profile}`" class="user-profile-img" />
+                            <b>{{com.uname}}:</b>&nbsp;&nbsp; {{ com.comment}}
+                            <br>
+                            <br>
+                        </div>
                     </span>
                 </div>
                 <br>
                 <br>
             </div>
         </center>
-        <div class="footer">
-            <p>
-                <a href="">ABOUT</a>
-                <a href="">HELP</a>
-                <a href="">PRESS</a>
-                <a href="">API</a>
-                <a href="">JOBS</a>
-                <a href="">PRIVACY</a>
-                <a href="">TERMS</a>
-                <a href="">LOCATIONS</a>
-                <a href="">HASHTAGS</a>
-                <a href="">TOP ACCOUNTS</a>
-                <a href="">LANGUAGE</a>
-                <a href="" class="disabled">&#169;2020 INSTAGRAM FROM FACEBOOK</a>
-            </p>
-        </div>
     </div>
 </template>
 
@@ -147,6 +138,10 @@
         },
         data() {
             return {
+                pro:"",
+                po:"",
+                post:[],
+                slides:0,
                 usercom: "",
                 iddot1: "",
                 liked: "",
@@ -154,81 +149,69 @@
                 comid: "",
                 iddot: "",
                 cats: [],
-                pro: "",
                 image1: require('../components/images/activity.png'),
                 image2: require('../components/images/like-image-color.png'),
                 temp: "",
                 like: 0,
                 t: require('../components/images/activity.png'),
                 isFavorite: false,
-                po: ""
+                usercomments:[]
             }
         },
         mounted() {
-            this.cats = []
-            let pa = [];
-            this.slides = 0
-            let email = sessionStorage.getItem('email');
-            if (email == "") {
-                this.$router.push({
-                    path: '/Error'
-                })
-            }
-            fetch("https://secret-ridge-70355.herokuapp.com/api/user/getallusers")
-                .then(response => response.json())
-                .then(dataans => {
-                    dataans.forEach(users => {
-                        console.log(users)
-                        if ((users.moboremail == email) || (users.uname == email) || (users.email ==
-                            email)) {
-                            this.pro = users.profile
-                            this.username = users.uname
-                        }
-                        if (users.posts == "") {
-                            this.po = []
-                        } else {
-                            this.po = JSON.parse(users.posts)
-                        }
-                        console.log(this.po)
-                        this.po.forEach(post => {
-                            pa = []
-                            this.slides = 0
-                            post.path.forEach(p => {
-                                pa.push(p.title)
-                                this.slides = this.slides + 1
-                            })
-                            var sam = {
-                                profile: users.profile,
-                                name: users.uname,
-                                path: pa,
-                                comment: post.comment,
-                                likes: post.likes,
-                                date: post.date,
-                                id: post.id,
-                                slides: this.slides,
-                                moboremail: users.moboremail
-                            }
-                            this.like = parseInt(post.likes)
-                            this.cats.push(sam);
+            let email=sessionStorage.getItem("email")
+            fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/" + email)
+            .then(response => response.json())
+            .then(user => {
+                this.pro = user.profile
+            });
+            let postuemail=sessionStorage.getItem("postuser");
+            let imageid=sessionStorage.getItem("imageid");
+            sessionStorage.setItem('postuser', "")
+                sessionStorage.setItem('imageid', "")
+            let pa=[]
+            fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/" + postuemail)
+            .then(response => response.json())
+            .then(user => {
+                this.po = JSON.parse(user.posts);
+                this.po.forEach(post=>{
+                    if(post.id==imageid){
+                        pa=[]
+                        this.slides=0
+                        post.path.forEach(p=>{
+                            pa.push(p.title)
+                            this.slides=this.slides+1
                         })
-                    })
-                });
+                        var sam={
+                            profile:user.profile,
+                            name:user.uname,
+                            path:pa,
+                            comment:post.comment,
+                            likes:post.likes,
+                            date:post.date,
+                            id:post.id,
+                            slides:this.slides,
+                            moboremail:user.moboremail
+                        }
+                        post.ucom.forEach(u=>{
+                            if(u!=""){
+                                this.usercomments.push(u)
+                            }
+                        })
+                        console.log(this.usercomments)
+                        this.post.push(sam);
+                    }
+                })
+            });
+            console.log(this.post)
         },
         methods: {
-            postcom(imgid, email) {
-                sessionStorage.setItem('postuser', email)
-                sessionStorage.setItem('imageid', imgid)
-                this.$router.push({
-                    path: '/postcom'
-                })
-            },
             saveucom(img, email) {
                 console.log(email)
                 let newposts = []
                 var com = {
                     uname: this.username,
-                    comment: this.usercom,
-                    profile:this.pro
+                    comment: this.usercom
                 }
                 let ncom = [];
                 this.usercom = ""
@@ -355,43 +338,22 @@
 </script>
 
 <style scoped>
-    .comment {
-        text-align: initial;
-        margin-left: 2%;
-        line-height: 2em;
+    .postcom{
+        background-color: rgba(var(--b3f, 250, 250, 250), 1) !important;
+        overflow-x: hidden;
+    }
+    .nav-upload {
+        background-color: white;
+        border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
     }
 
     .img-insta {
         width: 27%;
     }
 
-    .nav-upload {
-        background-color: white;
-        border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
-    }
-
-    .upload {
-        background-color: rgba(var(--b3f, 250, 250, 250), 1) !important;
-        overflow-x: hidden;
-    }
-
-    .login {
-        background-color: white;
-        border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
-        margin-top: 2em;
-        /* max-width: 350px; */
-    }
-
-    .search-bar {
-        text-align: center;
-        background-color: rgba(var(--b3f, 250, 250, 250), 1);
-        border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
-        border-radius: 2px;
-        font-family: 'Helvetica', FontAwesome, sans-serif;
-        width: 53%;
-        font-size: 12px;
-        height: 74%;
-        margin-top: 1%;
+    .icon-arrange {
+        margin-left: -3%;
+        margin-top: 0.5%;
     }
 
     .icon-side {
@@ -399,59 +361,12 @@
         margin-right: 3%;
     }
 
-    .post-img {
-        width: 600px;
-        /* height: 600px; */
+    .user-profile-img {
+        width: 25px;
+        height: 25px;
         object-fit: cover;
-        margin-left: -1px;
-        border-bottom: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
-    }
-
-    .post-p {
-        background-color: white;
-        width: 600px;
-        border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
-    }
-
-    .footer {
-        margin-top: 6em;
-        margin-left: 8em;
-        font-size: 12px;
-    }
-
-    .footer a {
-        color: #385185;
-        margin-right: 1em;
-        font-weight: 600;
-    }
-
-    a.disabled {
-        pointer-events: none;
-        cursor: default;
-        margin-left: 20em;
-    }
-
-    input:focus,
-    textarea:focus,
-    select:focus {
-        outline: none;
-    }
-
-    .username-post {
-        text-align: left;
-        line-height: 3em;
-        border-bottom: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
-        /* margin-left: 2%; */
-    }
-
-    .like-btn {
-        text-align: left;
-        margin-left: 1%;
-    }
-
-    .main {
-        width: 50%;
-        margin: 50px auto;
+        border-radius: 50%;
+        margin-right: 3%;
     }
 
     .has-search .form-control {
@@ -478,26 +393,45 @@
         box-shadow: none;
     }
 
+    .search-bar {
+        text-align: center;
+        background-color: rgba(var(--b3f, 250, 250, 250), 1);
+        border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
+        border-radius: 2px;
+        font-family: 'Helvetica', FontAwesome, sans-serif;
+        width: 53%;
+        font-size: 12px;
+        height: 74%;
+        margin-top: 1%;
+    }
+     .post-p {
+        background-color: white;
+        width: 600px;
+        border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
+    }
+    .username-post {
+        text-align: left;
+        line-height: 3em;
+        border-bottom: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
+        /* margin-left: 2%; */
+    }
+     .user-profile-img {
+        width: 25px;
+        height: 25px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-right: 3%;
+    }
     .three-dots {
         margin-left: 77%;
     }
-
-    .showmore {
-        color: inherit;
-        font-weight: 600;
-        font-size: 15px;
-        font-style: italic;
-        text-decoration: underline;
-        cursor: pointer;
+    .post-img {
+        width: 600px;
+        /* height: 600px; */
+        object-fit: cover;
+        margin-left: -1px;
+        border-bottom: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
     }
-
-    .next {
-        right: 0;
-        margin-left: auto;
-        margin-right: 25px;
-        text-indent: 2px;
-    }
-
     .dots {
         /* position: fixed; */
         display: block;
@@ -567,21 +501,16 @@
         opacity: 0;
         transform: translate(-60%, -50%);
     }
-
-    .user-profile-img {
-        width: 25px;
-        height: 25px;
-        object-fit: cover;
-        border-radius: 50%;
-        margin-right: 3%;
+     .like-btn {
+        text-align: left;
+        margin-left: 1%;
     }
-
-    .icon-arrange {
-        margin-left: -3%;
-        margin-top: 0.5%;
+    .comment {
+        text-align: initial;
+        margin-left: 2%;
+        line-height: 2em;
     }
-
-    .comment-edit {
+     .comment-edit {
         border: none;
         border-bottom: 1px solid black;
         line-height: 0em;
@@ -600,50 +529,19 @@
     input:focus{
         outline:none
     }
-
-    /* responsive */
     @media only screen and (max-width: 600px) {
-        .three-dots {
-            margin-left: 44%;
-        }
-
         .icon-arrange {
             margin-left: unset;
         }
-
-        .profile-icon {
-            text-align: unset;
+        .three-dots {
+            margin-left: 44%;
         }
-
-        .new-post {
-            width: 34%;
-        }
-
-        .size {
-            height: 100px;
-            width: 100px;
-        }
-
-        .dots {
-            text-align: left;
-            margin-left: 27%;
-        }
-
-        .list-load {
-            margin-left: -37%;
-        }
-
         .post-img {
             width: 375px;
             /* height: 375px; */
         }
-
-        .slides {
-            justify-content: unset;
-        }
-
-        .footer {
-            display: none;
+         .list-load {
+            margin-left: -37%;
         }
     }
 </style>

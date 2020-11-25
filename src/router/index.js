@@ -73,6 +73,22 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../components/edit-post.vue')
   },
+  {
+    path: '/postcom',
+    name: 'postcom',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../components/postcom.vue')
+  },
+  {
+    path: '/Error',
+    name: 'Error',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../components/Error.vue')
+  },
 ]
 
 const router = new VueRouter({

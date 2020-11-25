@@ -143,6 +143,9 @@
     },
     mounted() {
       let email = sessionStorage.getItem('email');
+       if(email==""){
+          this.$router.push({path: '/Error'})
+      }
       // let users = JSON.parse(localStorage.getItem("instausers"));
       console.log(email)
       fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/" + email)
