@@ -18,7 +18,9 @@
                     <img :src="require('./images/home-icon.png')" class="icon-side" />
                     <img :src="require('./images/save.png')" class="icon-side" />
                     <img :src="require('./images/discover.png')" class="icon-side" />
-                    <img :src="require('./images/activity.png')" class="icon-side" />
+                    <router-link to="/request">
+                        <img :src="require('./images/activity.png')" class="icon-side" />
+                    </router-link>
                     <router-link to="/profile">
                         <img :src="`${pro}`" class="user-profile-img" />
                     </router-link>
@@ -111,7 +113,7 @@
                             {{cat.date}}
                         </div>
                         <div class="comment">
-                            <input type="text" v-if="iddot==''" @click="changecom(`${cat.id}`)" class="comment-edit" id='comedit' @mouseout="iddot=''">
+                            <input type="text" v-if="iddot!=cat.id" @click="changecom(`${cat.id}`)" class="comment-edit" id='comedit'>
                             <input type="text" v-if="iddot==cat.id" v-model="usercom" class="comment-edit" id='comedit'>
                             <button @click="saveucom(`${cat.id}`,`${cat.moboremail}`)" class="save-edit">POST</button>
                         </div>
