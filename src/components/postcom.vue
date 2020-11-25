@@ -168,7 +168,7 @@
             let postuemail=sessionStorage.getItem("postuser");
             let imageid=sessionStorage.getItem("imageid");
             sessionStorage.setItem('postuser', "")
-                sessionStorage.setItem('imageid', "")
+            sessionStorage.setItem('imageid', "")
             let pa=[]
             fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/" + postuemail)
             .then(response => response.json())

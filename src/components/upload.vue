@@ -111,7 +111,8 @@
                             {{cat.date}}
                         </div>
                         <div class="comment">
-                            <input type="text" v-model="usercom" class="comment-edit" id='comedit'>
+                            <input type="text" v-if="iddot==''" @click="changecom(`${cat.id}`)" class="comment-edit" id='comedit' @mouseout="iddot=''">
+                            <input type="text" v-if="iddot==cat.id" v-model="usercom" class="comment-edit" id='comedit'>
                             <button @click="saveucom(`${cat.id}`,`${cat.moboremail}`)" class="save-edit">POST</button>
                         </div>
                     </span>
@@ -161,7 +162,7 @@
                 like: 0,
                 t: require('../components/images/activity.png'),
                 isFavorite: false,
-                po: ""
+                po: "",
             }
         },
         mounted() {
@@ -215,6 +216,9 @@
                 });
         },
         methods: {
+            changecom(id){
+                this.iddot=id
+            },
             postcom(imgid, email) {
                 sessionStorage.setItem('postuser', email)
                 sessionStorage.setItem('imageid', imgid)
@@ -223,6 +227,7 @@
                 })
             },
             saveucom(img, email) {
+                this.iddot=""
                 console.log(email)
                 let newposts = []
                 var com = {
@@ -234,8 +239,13 @@
                 this.usercom = ""
                 this.po.forEach(post => {
                     if (img == post.id) {
-                        ncom.push(post.ucom)
+                        let coms=post.ucom
+                        coms.forEach(comu=>{
+                            // if(comu!="")
+                                ncom.push(comu)
+                        })
                         ncom.push(com)
+                        console.log(ncom)
                         var npost = {
                             id: post.id,
                             path: post.path,
