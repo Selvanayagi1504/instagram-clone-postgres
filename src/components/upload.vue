@@ -100,6 +100,18 @@
                             <b>{{cat.name}}:</b>&nbsp;&nbsp; {{cat.comment}}
                             <br>
                             {{cat.date}}
+                           <div v-if="cat.commentl>0">
+                                <div v-if="cat.commentl==1">
+                                    <img :src="`${cat.ucomprofile}`" class="user-profile-img" />
+                                    <b>{{cat.ucomname}}:</b>&nbsp;&nbsp; {{ cat.ucom}}
+                                </div>
+                                <div v-if="cat.commentl>1">
+                                    <img :src="`${cat.ucomprofile}`" class="user-profile-img" />
+                                    <b>{{cat.ucomname}}:</b>&nbsp;&nbsp; {{ cat.ucom}}
+                                    <br>
+                                    <a @click="postcom(`${cat.id}`,`${cat.moboremail}`)" style="cursor: pointer;"> view all {{cat.commentl}} comments</a>
+                                </div>    
+                            </div>
                         </div>
                         <div class="comment" v-if="cat.comment.length>10">
                             <span>
@@ -111,7 +123,22 @@
                             </span>
                             <!-- <br> -->
                             {{cat.date}}
+                            <br>
+                            <!-- {{cat.commentl}} -->
+                           <div v-if="cat.commentl>0">
+                                <div v-if="cat.commentl==1">
+                                    <img :src="`${cat.ucomprofile}`" class="user-profile-img" />
+                                    <b>{{cat.ucomname}}:</b>&nbsp;&nbsp; {{ cat.ucom}}
+                                </div>
+                                <div v-if="cat.commentl>1">
+                                    <img :src="`${cat.ucomprofile}`" class="user-profile-img" />
+                                    <b>{{cat.ucomname}}:</b>&nbsp;&nbsp; {{ cat.ucom}}
+                                    <br>
+                                    <a @click="postcom(`${cat.id}`,`${cat.moboremail}`)" style="cursor: pointer;"> view all {{cat.commentl}} comments</a>
+                                </div>    
+                            </div>
                         </div>
+
                         <div class="comment">
                             <input type="text" v-if="iddot!=cat.id" @click="changecom(`${cat.id}`)" class="comment-edit" id='comedit'>
                             <input type="text" v-if="iddot==cat.id" v-model="usercom" class="comment-edit" id='comedit'>
@@ -200,6 +227,10 @@
                                 pa.push(p.title)
                                 this.slides = this.slides + 1
                             })
+                            let m=[]
+                            m=post.ucom[0]
+                            // console.log(m.profile)
+                            let comlength=Object.keys(post.ucom).length
                             var sam = {
                                 profile: users.profile,
                                 name: users.uname,
@@ -209,8 +240,13 @@
                                 date: post.date,
                                 id: post.id,
                                 slides: this.slides,
-                                moboremail: users.moboremail
+                                moboremail: users.moboremail,
+                                commentl:comlength,
+                                ucom:m.comment,
+                                ucomname:m.uname,
+                                ucomprofile:m.profile
                             }
+                            console.log(sam.ucom)
                             this.like = parseInt(post.likes)
                             this.cats.push(sam);
                         })
