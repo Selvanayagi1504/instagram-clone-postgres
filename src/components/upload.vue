@@ -228,9 +228,11 @@
                                 this.slides = this.slides + 1
                             })
                             let m=[]
-                            m=post.ucom[0]
-                            // console.log(m.profile)
                             let comlength=Object.keys(post.ucom).length
+                            if(comlength>0){
+                            m=post.ucom[0]
+                            }
+                            // console.log(m.profile)
                             var sam = {
                                 profile: users.profile,
                                 name: users.uname,
