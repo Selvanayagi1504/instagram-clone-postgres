@@ -21,7 +21,7 @@
                         <input v-model="fname" placeholder="fname" class="box-in"> 
                         <input v-model="uname" placeholder="uname" class="box-in"> 
                         <input type="password" v-model="pass" placeholder="password" class="box-in"> 
-                        <button @click="saveCats" class="login-btn" type="submit">Sign Up</button>
+                        <button @click="saveCats" class="login-btn" type="button">Sign Up</button>
                     </form>
                 </div>
                 <div class="terms">
