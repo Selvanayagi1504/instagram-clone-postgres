@@ -166,6 +166,17 @@ export default {
       }) 
       .then(response => response.json()) 
       .then(json => console.log(json)); 
+      fetch("https://secret-ridge-70355.herokuapp.com/api/user/ct", {  
+          method: "POST", 
+          body: JSON.stringify(
+            instausers
+          ),  
+          headers: { 
+              "Content-type": "application/json; charset=UTF-8"
+          } 
+      }) 
+      .then(response => response.json()) 
+      .then(json => console.log(json)); 
         this.$router.push({path: '/home'})
     },
     validEmail: function (email) {
