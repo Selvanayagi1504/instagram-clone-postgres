@@ -347,7 +347,7 @@
             }
             console.log(email)
             this.slides = 0
-            fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/" + email,{headers: {"x-access-token": localStorage.getItem("token")}})
+            fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/" + email)
                 .then(response => response.json())
                 .then(user => {
                     this.pro = user.profile
@@ -501,7 +501,9 @@
                         body: JSON.stringify(
                             post
                         ),
-                        headers: {"x-access-token": localStorage.getItem("token")}
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8"
+                        }
                     })
                     .then(response => response.json())
                     .then(json => console.log(json));
@@ -580,7 +582,9 @@
                         body: JSON.stringify(
                             post
                         ),
-                        headers: {"x-access-token": localStorage.getItem("token")}
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8"
+                        }
                     })
                     .then(response => response.json())
                     .then(json => console.log(json));
@@ -601,7 +605,9 @@
                         body: JSON.stringify(
                             post
                         ),
-                        headers: {"x-access-token": localStorage.getItem("token")}
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8"
+                        }
                     })
                     .then(response => response.json())
                     .then(json => console.log(json));
@@ -614,7 +620,9 @@
                         body: JSON.stringify(
                             this.po
                         ),
-                        headers: {"x-access-token": localStorage.getItem("token")}
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8"
+                        }
                     })
                     .then(response => response.json())
                     .then(json => console.log(json));

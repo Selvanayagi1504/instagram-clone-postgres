@@ -127,33 +127,20 @@ export default {
     },
     check() {
       if(!this.moboremail) return;
-
-      fetch("https://secret-ridge-70355.herokuapp.com/api/user/login/"+this.moboremail+'/'+this.pass)
+      let flag=false;
+      fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/"+this.moboremail)
       .then(response => response.json())
       .then(dataans => {
-        // console.log(dataans)
-        // console.log(this.pass)
-        // if(dataans.pass==this.pass){
-        //   flag=true;
-        //   console.log(flag)
-        //   this.$router.push({path: '/upload'})
-        //   sessionStorage.setItem('email',this.moboremail)
-        // }
-        // else{
-        //   alert("Invalid");
-        // }
-        if (dataans.status == true) {
-            // store the user token and user data in localStorage
-            localStorage.setItem('token', dataans.token);
-            this.$router.push({path: '/upload'})
-            sessionStorage.setItem('email',this.moboremail)
-            // now send the user to the next route
-            // this.$router.push({
-            //   name: "Dashboard",
-            // });
+        console.log(dataans)
+        console.log(this.pass)
+        if(dataans.pass==this.pass){
+          flag=true;
+          console.log(flag)
+          this.$router.push({path: '/upload'})
+          sessionStorage.setItem('email',this.moboremail)
         }
         else{
-          alert("invalid");
+          alert("Invalid");
         }
       });
     }

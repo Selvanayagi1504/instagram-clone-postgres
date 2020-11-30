@@ -21,7 +21,7 @@
                         <input v-model="fname" placeholder="fname" class="box-in"> 
                         <input v-model="uname" placeholder="uname" class="box-in"> 
                         <input type="password" v-model="pass" placeholder="password" class="box-in"> 
-                        <button @click="saveCats" class="login-btn" type="button">Sign Up</button>
+                        <button @click="saveCats" class="login-btn" type="submit">Sign Up</button>
                     </form>
                 </div>
                 <div class="terms">
@@ -156,17 +156,6 @@ export default {
       let instausers=this.users;
       console.log(instausers)
       fetch("https://secret-ridge-70355.herokuapp.com/api/user/saveuser", {  
-          method: "POST", 
-          body: JSON.stringify(
-            instausers
-          ),  
-          headers: { 
-              "Content-type": "application/json; charset=UTF-8"
-          } 
-      }) 
-      .then(response => response.json()) 
-      .then(json => console.log(json)); 
-      fetch("https://secret-ridge-70355.herokuapp.com/api/user/ct", {  
           method: "POST", 
           body: JSON.stringify(
             instausers
