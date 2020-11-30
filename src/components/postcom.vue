@@ -160,7 +160,7 @@
         },
         mounted() {
             let email=sessionStorage.getItem("email")
-            fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/" + email)
+            fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/" + email,{headers: {"x-access-token": localStorage.getItem("token")}})
             .then(response => response.json())
             .then(user => {
                 this.pro = user.profile
@@ -170,7 +170,7 @@
             sessionStorage.setItem('postuser', "")
             sessionStorage.setItem('imageid', "")
             let pa=[]
-            fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/" + postuemail)
+            fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/" + postuemail,{headers: {"x-access-token": localStorage.getItem("token")}})
             .then(response => response.json())
             .then(user => {
                 this.po = JSON.parse(user.posts);
@@ -238,9 +238,7 @@
                         body: JSON.stringify(
                             newposts
                         ),
-                        headers: {
-                            "Content-type": "application/json; charset=UTF-8"
-                        }
+                        headers: {"x-access-token": localStorage.getItem("token")}
                     })
                     .then(response => response.json())
                     .then(json => console.log(json));
@@ -285,9 +283,7 @@
                         body: JSON.stringify(
                             newposts
                         ),
-                        headers: {
-                            "Content-type": "application/json; charset=UTF-8"
-                        }
+                        headers: {"x-access-token": localStorage.getItem("token")}
                     })
                     .then(response => response.json())
                     .then(json => console.log(json));
@@ -326,9 +322,7 @@
                         body: JSON.stringify(
                             newposts
                         ),
-                        headers: {
-                            "Content-type": "application/json; charset=UTF-8"
-                        }
+                        headers: {"x-access-token": localStorage.getItem("token")}
                     })
                     .then(response => response.json())
                     .then(json => console.log(json));

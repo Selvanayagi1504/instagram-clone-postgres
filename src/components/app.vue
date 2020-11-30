@@ -148,7 +148,7 @@
       }
       // let users = JSON.parse(localStorage.getItem("instausers"));
       console.log(email)
-      fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/" + email)
+      fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/" + email,{headers: {"x-access-token": localStorage.getItem("token")}})
         .then(response => response.json())
         .then(user => {
           this.profile_path = user.profile
@@ -279,7 +279,7 @@
             this.po
         ),
         headers: {
-            "Content-type": "application/json; charset=UTF-8"
+            "x-access-token": localStorage.getItem("token")
         }
     })
     .then(response => response.json())

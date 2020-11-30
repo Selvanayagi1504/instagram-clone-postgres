@@ -204,7 +204,7 @@
                     path: '/Error'
                 })
             }
-            fetch("https://secret-ridge-70355.herokuapp.com/api/user/getallusers")
+            fetch("https://secret-ridge-70355.herokuapp.com/api/user/getallusers",{headers: {"x-access-token": localStorage.getItem("token")}})
                 .then(response => response.json())
                 .then(dataans => {
                     dataans.forEach(users => {
@@ -303,9 +303,7 @@
                         body: JSON.stringify(
                             newposts
                         ),
-                        headers: {
-                            "Content-type": "application/json; charset=UTF-8"
-                        }
+                        headers: {"x-access-token": localStorage.getItem("token")}
                     })
                     .then(response => response.json())
                     .then(json => console.log(json));
@@ -350,9 +348,7 @@
                         body: JSON.stringify(
                             newposts
                         ),
-                        headers: {
-                            "Content-type": "application/json; charset=UTF-8"
-                        }
+                        headers: {"x-access-token": localStorage.getItem("token")}
                     })
                     .then(response => response.json())
                     .then(json => console.log(json));
@@ -391,9 +387,7 @@
                         body: JSON.stringify(
                             newposts
                         ),
-                        headers: {
-                            "Content-type": "application/json; charset=UTF-8"
-                        }
+                        headers: {"x-access-token": localStorage.getItem("token")}
                     })
                     .then(response => response.json())
                     .then(json => console.log(json));

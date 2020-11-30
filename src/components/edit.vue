@@ -591,7 +591,7 @@
              if(email==""){
                 this.$router.push({path: '/Error'})
             }
-            fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/"+email)
+            fetch("https://secret-ridge-70355.herokuapp.com/api/user/getuser/"+email,{headers: {"x-access-token": localStorage.getItem("token")}})
             .then(response => response.json())
             .then(dataans => {
                 this.uname = dataans.uname
@@ -638,9 +638,7 @@
                     body: JSON.stringify(
                         cuser
                     ),  
-                    headers: { 
-                        "Content-type": "application/json; charset=UTF-8"
-                    } 
+                    headers: {"x-access-token": localStorage.getItem("token")}
                 }) 
                 .then(response => response.json()) 
                 .then(json => console.log(json));
@@ -661,9 +659,7 @@
                     body: JSON.stringify(
                         pass
                     ),  
-                    headers: { 
-                        "Content-type": "application/json; charset=UTF-8"
-                    } 
+                   headers: {"x-access-token": localStorage.getItem("token")}
                 }) 
                 .then(response => response.json()) 
                 .then(json => console.log(json));
